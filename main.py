@@ -23,7 +23,7 @@ def exercise2():
         'Neptune': 'fish',
         'Darwin': 'lizard',
     }
-    print(f'Data Types Exercise 2: {pets}')
+    print(f'Data Types Exercise 2: \n {pets}')
 
 
 
