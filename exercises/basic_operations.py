@@ -1,5 +1,5 @@
 
-def basic_ops_exercise1():
+def basic_ops_exercise_1():
     first_name = 'Kessler'
     last_name =  'Mentele'
     print('Basic Operations Exercise 1:')
@@ -10,7 +10,7 @@ def basic_ops_exercise1():
     print(first_name + " " + last_name + '\n')
 
 
-def basic_ops_exercise2():
+def basic_ops_exercise_2():
     print('Basic Operations Exercise 2:')
     print(
         '# Use the REPL and the arithmetic operators to extract the individual digits of 4936:\n'
@@ -79,8 +79,8 @@ def basic_ops_exercise_8():
           'two values as strings, and 1 is less than 9. \n')
 
 def main():
-    basic_ops_exercise1()
-    basic_ops_exercise2()
+    basic_ops_exercise_1()
+    basic_ops_exercise_2()
     basic_ops_exercise_3_4()
     basic_ops_exercise_5()
     basic_ops_exercise_6()

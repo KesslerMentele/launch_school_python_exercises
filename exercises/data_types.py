@@ -1,4 +1,4 @@
-def data_types_exercise1():
+def data_types_exercise_1():
     data = """
     | Value          | Data Type |
     |----------------|-----------|
@@ -17,7 +17,7 @@ def data_types_exercise1():
     print('\n')
 
 
-def data_types_exercise2():
+def data_types_exercise_2():
     pets = {
         'Asta': 'dog',
         'Butterscotch': 'cat',
@@ -30,8 +30,8 @@ def data_types_exercise2():
 
 
 def main():
-    data_types_exercise1()
-    data_types_exercise2()
+    data_types_exercise_1()
+    data_types_exercise_2()
 
 if __name__ == "__main__":
     main()
