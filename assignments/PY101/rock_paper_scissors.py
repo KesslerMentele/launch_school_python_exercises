@@ -1,6 +1,14 @@
 import random
 
-VALID_CHOICES = ['scissors', 'paper', 'rock', 'lizard', 'spock', 'dynamite', 'spork']
+VALID_CHOICES = [
+    'scissors',
+    'paper',
+    'rock',
+    'lizard',
+    'spock',
+    'dynamite',
+     'spork'
+     ]
 # This will work with any number of valid choices.
 # Where a choice will:
 # Win to any choice an odd number of indices in front,
@@ -9,9 +17,6 @@ VALID_CHOICES = ['scissors', 'paper', 'rock', 'lizard', 'spock', 'dynamite', 'sp
 
 MIN_BRIGHTNESS = 400
 
-
-
-colors  = []
 
 def create_identifiers():
     index = 0
@@ -63,6 +68,7 @@ def get_colors(count):
 
     return color_list
 
+colors = get_colors(len(VALID_CHOICES))
 
 def colorize_text(text):
     for word, color in zip(VALID_CHOICES, colors):
@@ -118,8 +124,6 @@ def game_loop():
 
 
 def rock_paper_scissors():
-    global colors
-    colors = get_colors(len(VALID_CHOICES))
     replay = ''
 
 
