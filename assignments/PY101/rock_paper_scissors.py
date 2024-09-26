@@ -9,6 +9,8 @@ VALID_CHOICES = ['scissors', 'paper', 'rock', 'lizard', 'spock', 'dynamite', 'sp
 
 MIN_BRIGHTNESS = 400
 
+
+
 colors  = []
 
 def create_identifiers():
@@ -27,6 +29,12 @@ def create_identifiers():
             char_index += 1
         index += 1
     return identifiers
+
+
+typeable_options = create_identifiers()
+
+formatted_choices = [f"{choice} ({option})" for choice, option in
+                     zip(VALID_CHOICES, typeable_options)]
 
 
 def enforce_min_brightness(r, g, b):
@@ -55,10 +63,12 @@ def get_colors(count):
 
     return color_list
 
+
 def colorize_text(text):
     for word, color in zip(VALID_CHOICES, colors):
         text = text.replace(word, f"{color}{word}\033[0m")
     return text
+
 
 def prompt(message):
 
@@ -69,44 +79,57 @@ def ask(message):
     return input(f"==> {colorize_text(message)}\n")
 
 
-def determine_winner(player_1, player_2):
+def determine_round_winner(player_1, player_2):
     index_1 = VALID_CHOICES.index(player_1)
     index_2 = VALID_CHOICES.index(player_2)
 
     if index_1 == index_2:
-        return f"You both chose {player_1}. It's a tie!"
+        return f"You both chose {player_1}. It's a tie! No points!", None
 
     if index_1 > index_2:
         if (index_1 - index_2) % 2 == 0:
-            return f"{player_1} beats {player_2}! You win!"
-        return f"{player_2} beats {player_1}! You lose!"
+            return f"{player_1} beats {player_2}! You win the round!", 0
+        return f"{player_2} beats {player_1}! You lose the round!", 1
     if (index_2 - index_1) % 2 == 0:
-        return f"{player_2} beats {player_1}! You lose!"
-    return f"{player_1} beats {player_2}! You win!"
+        return f"{player_2} beats {player_1}! You lose the round!", 1
+    return f"{player_1} beats {player_2}! You win the round!", 0
+
+
+def game_loop():
+    scores = [0, 0]
+    while not any(value == 3 for value in scores ):
+        choice = ask(f"Choose one: {', '.join(formatted_choices)}")
+        while choice.casefold() not in typeable_options:
+            prompt('That isn\'t an option!')
+            choice = ask(f"Choose one: {', '.join(formatted_choices)}")
+        choice_index = typeable_options.index(choice)
+        choice = VALID_CHOICES[choice_index]
+
+        computer_choice = random.choice(VALID_CHOICES)
+        prompt(f"You chose {choice}, the computer chose {computer_choice}")
+        winner, point = determine_round_winner(choice, computer_choice)
+        if point:
+            scores[point] += 1
+        prompt(winner)
+    if scores[0] == 3:
+        return "And that's 3 points to you, you win!"
+    return "And that's 3 points to the computer, you lose!"
+
 
 
 def rock_paper_scissors():
     global colors
     colors = get_colors(len(VALID_CHOICES))
     replay = ''
-    typeable_options = create_identifiers()
-    formatted_choices = [f"{choice} ({option})" for choice, option in
-                         zip(VALID_CHOICES, typeable_options)]
+
+
+
     while replay != 'n':
         replay = ''
-        choice = ask(f"Choose one: {', '.join(formatted_choices)}")
-        while choice.casefold() not in typeable_options:
-            prompt('That isn\'t an option!')
-            choice = ask(f"Choose one: {', '.join(VALID_CHOICES)}")
-        choice_index = typeable_options.index(choice)
-        choice = VALID_CHOICES[choice_index]
-
-        computer_choice = random.choice(VALID_CHOICES)
-        prompt(f"You chose {choice}, the computer chose {computer_choice}")
-        winner = determine_winner(choice, computer_choice)
-        prompt(winner)
+        result = game_loop()
+        prompt(result)
         while replay not in ['y', 'n','s']:
-            replay = ask("Play again? (Y/N)").casefold()
+            replay = ask("Good game! Play again? (Y/N)").casefold()
 
 
 
