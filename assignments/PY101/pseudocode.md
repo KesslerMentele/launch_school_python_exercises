@@ -108,4 +108,32 @@ PRINT output_list
 END
 ```
 
+### A function that takes a list of strings, and determines the minimum number of characters required to uniquely identify each string
 
+```pseudocode
+START
+
+# Given a list of strings 'strings'
+
+SET identifiers = []
+SET index = 0
+
+WHILE index in len(strings)
+    SET char_index = 0
+    SET identifier = ''
+    
+    WHILE char_index in len(strings[index])
+    
+        indetifier += strings[index][char_index]
+        
+        IF strings[index][char_index] NOT IN IDENTIFIERS
+            SET identifiers[index] = identifier
+            break
+            
+        SET char_index += 1
+    SET index += 1
+
+PRINT identifiers
+
+END
+```

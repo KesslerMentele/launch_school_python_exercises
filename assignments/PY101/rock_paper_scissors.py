@@ -1,14 +1,32 @@
 import random
 
-VALID_CHOICES = ['scissors', 'paper', 'rock'] # 'lizard', 'spock', 'dynamite']
+VALID_CHOICES = ['scissors', 'paper', 'rock', 'lizard', 'spock', 'dynamite', 'spork']
 # This will work with any number of valid choices.
 # Where a choice will:
 # Win to any choice an odd number of indices in front,
 # and win to any even number of indices away behind
 # else it will lose
 
+MIN_BRIGHTNESS = 400
 
-MIN_BRIGHTNESS = 650
+colors  = []
+
+def create_identifiers():
+    index = 0
+    identifiers = []
+
+    while index < len(VALID_CHOICES):
+        char_index = 0
+        identifier = ''
+
+        while char_index < len(VALID_CHOICES[index]):
+            identifier += VALID_CHOICES[index][char_index]
+            if identifier not in identifiers:
+                identifiers.append(identifier)
+                break
+            char_index += 1
+        index += 1
+    return identifiers
 
 
 def enforce_min_brightness(r, g, b):
@@ -36,8 +54,6 @@ def get_colors(count):
         color_list.append(f"\033[38;2;{r};{g};{b}m")
 
     return color_list
-
-colors  = get_colors(len(VALID_CHOICES))
 
 def colorize_text(text):
     for word, color in zip(VALID_CHOICES, colors):
@@ -70,13 +86,21 @@ def determine_winner(player_1, player_2):
 
 
 def rock_paper_scissors():
+    global colors
+    colors = get_colors(len(VALID_CHOICES))
     replay = ''
+    typeable_options = create_identifiers()
+    formatted_choices = [f"{choice} ({option})" for choice, option in
+                         zip(VALID_CHOICES, typeable_options)]
     while replay != 'n':
         replay = ''
-        choice = ask(f"Choose one: {', '.join(VALID_CHOICES)}")
-        while choice.casefold() not in VALID_CHOICES:
+        choice = ask(f"Choose one: {', '.join(formatted_choices)}")
+        while choice.casefold() not in typeable_options:
             prompt('That isn\'t an option!')
             choice = ask(f"Choose one: {', '.join(VALID_CHOICES)}")
+        choice_index = typeable_options.index(choice)
+        choice = VALID_CHOICES[choice_index]
+
         computer_choice = random.choice(VALID_CHOICES)
         prompt(f"You chose {choice}, the computer chose {computer_choice}")
         winner = determine_winner(choice, computer_choice)
