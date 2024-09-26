@@ -1,0 +1,16 @@
+{
+  "invalid_type": "Please input the message as a(n) {name}",
+  "invalid_apr": "Please input the message as a percent or decimal (e.g. 2.7% or 0.027)",
+  "invalid_loan": "Please input the loan amount as a positive number. (e.g. $50.75 or 100,000)",
+  "invalid_duration_type": "Please choose either months (M) or years (Y)",
+
+  "non_positive_value": "Value cannot be zero or negative",
+  "apr": "And what is the interest rate? (APR) ",
+  "loan": "How much is the loan?",
+
+  "duration": "And finally, how long is the loan duration? ",
+  "duration_type": "Is that in months, or years? (M/Y)",
+
+  "result_value": "Your loan monthly payment is: ${payment}",
+  "result_duration": "Across {duration_months} months"
+}

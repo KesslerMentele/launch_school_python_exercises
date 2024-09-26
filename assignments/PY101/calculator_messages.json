@@ -1,0 +1,68 @@
+{"en":{
+  "welcome": "Welcome to Calculator!",
+  "first": "What's the first number?",
+  "second": "What's the second number?",
+  "operator": "What's the operation to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide",
+  "invalid_number": "Hmm... that doesn't look like a valid number",
+  "invalid_operator": "You must choose 1, 2, 3, or 4",
+  "result": "==> The result is {output}",
+  "again": "Would you like to run another calculation? (Y/N)",
+  "invalid_choice": "Please choose Y or N"
+},
+"es": {
+    "welcome": "¡Bienvenido a la Calculadora!",
+    "first": "¿Cuál es el primer número?",
+    "second": "¿Cuál es el segundo número?",
+    "operator": "¿Qué operación deseas realizar?\n1) Sumar 2) Restar 3) Multiplicar 4) Dividir",
+    "invalid_number": "Hmm... eso no parece un número válido",
+    "invalid_operator": "Debes elegir 1, 2, 3, o 4",
+    "result": "==> El resultado es {output}",
+    "again": "¿Te gustaría realizar otro cálculo? (S/N)",
+    "invalid_choice": "Por favor, elige S o N"
+},
+  "fr": {
+    "welcome": "Bienvenue sur la Calculatrice !",
+    "first": "Quel est le premier nombre ?",
+    "second": "Quel est le deuxième nombre ?",
+    "operator": "Quelle opération souhaitez-vous effectuer ?\n1) Additionner 2) Soustraire 3) Multiplier 4) Diviser",
+    "invalid_number": "Hmm... cela ne semble pas être un nombre valide",
+    "invalid_operator": "Vous devez choisir 1, 2, 3 ou 4",
+    "result": "==> Le résultat est {output}",
+    "again": "Souhaitez-vous effectuer un autre calcul ? (O/N)",
+    "invalid_choice": "Veuillez choisir O ou N"
+},
+  "de": {
+    "welcome": "Willkommen zum Taschenrechner!",
+    "first": "Was ist die erste Zahl?",
+    "second": "Was ist die zweite Zahl?",
+    "operator": "Welche Operation soll durchgeführt werden?\n1) Addieren 2) Subtrahieren 3) Multiplizieren 4) Dividieren",
+    "invalid_number": "Hmm... das sieht nicht nach einer gültigen Zahl aus",
+    "invalid_operator": "Sie müssen 1, 2, 3 oder 4 wählen",
+    "result": "==> Das Ergebnis ist {output}",
+    "again": "Möchten Sie eine weitere Berechnung durchführen? (J/N)",
+    "invalid_choice": "Bitte wählen Sie J oder N"
+},
+  "ja": {
+    "welcome": "電卓へようこそ！",
+    "first": "最初の数字は何ですか？",
+    "second": "2番目の数字は何ですか？",
+    "operator": "どの操作を実行しますか？\n1) 足し算 2) 引き算 3) 掛け算 4) 割り算",
+    "invalid_number": "うーん...それは有効な数字ではないようです",
+    "invalid_operator": "1、2、3、または4を選択してください",
+    "result": "==> 結果は {output} です",
+    "again": "もう一度計算しますか？ (Y/N)",
+    "invalid_choice": "YまたはNを選択してください"
+},
+  "zh": {
+    "welcome": "欢迎使用计算器！",
+    "first": "第一个数字是什么？",
+    "second": "第二个数字是什么？",
+    "operator": "要执行什么操作？\n1) 加法 2) 减法 3) 乘法 4) 除法",
+    "invalid_number": "嗯...这看起来不像是一个有效的数字",
+    "invalid_operator": "您必须选择 1、2、3 或 4",
+    "result": "==> 结果是 {output}",
+    "again": "您想再运行一次计算吗？ (Y/N)",
+    "invalid_choice": "请选择 Y 或 N"
+}
+
+}
