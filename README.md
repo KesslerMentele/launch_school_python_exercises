@@ -1,2 +1,1 @@
-This repo is where I will put the answers to the exercises in the book 
-"Introduction to Programming with Python" by Launch School.
+This repo is where I will put my answers to assignments and exercises during Launch School's Python Track.
