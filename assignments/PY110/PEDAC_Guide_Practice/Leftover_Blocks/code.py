@@ -12,7 +12,7 @@ def calculate_pyramid(max_cubes_count):
 
 # I also wrote a faster approximation with time complexity O(1)
 # It fails with cube counts more than 16 digits long, but I think its close
-# enough to warrant being an answer.
+# enough for how much faster it is.
 
 def get_fast_remainder(cubes):
     # Fails with numbers > 1 * 10 ^ 19
