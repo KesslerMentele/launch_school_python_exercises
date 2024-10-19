@@ -107,11 +107,14 @@ def necessary_move(bs, options):
         has_won = find_winner(my_play)
         if has_won['win'] and has_won['winner'] == 'O':
             return my_play
+    for option in options:
         their_play = deepcopy(bs)
         their_play[option // 3][option % 3] = 'X'
         has_won = find_winner(their_play)
         if has_won['win'] and has_won['winner'] == 'X':
-            return my_play
+            their_play = deepcopy(bs)
+            their_play[option // 3][option % 3] = 'O'
+            return their_play
     return None
 
 
@@ -121,7 +124,7 @@ def medium(bs:list)->list:
     new_state = deepcopy(bs)
     if need:
         return need
-    return easy_bot(bs)
+    return easy(bs)
 
 
 def hard(bs:list)->list:
@@ -133,7 +136,7 @@ def hard(bs:list)->list:
     if 4 in options:
         new_state[1][1] = 'O'
         return new_state
-    return easy_bot(bs)
+    return easy(bs)
 
 
 # Board Construction
