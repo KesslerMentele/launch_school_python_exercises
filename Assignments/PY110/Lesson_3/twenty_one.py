@@ -44,9 +44,6 @@ class Card:
         self.is_ace = False
         self.is_number = False
 
-        if self.is_face:
-            self.value = 10
-        self.value = self.ranks[self.rank]
 
         if rank in self.faces:
             self.is_face = True
@@ -55,6 +52,11 @@ class Card:
             self.is_number = True
         else:
             self.is_number = True
+
+        if self.is_face:
+            self.value = 10
+        else:
+            self.value = self.ranks[self.rank]
 
 
     def __repr__(self):
@@ -71,17 +73,28 @@ class Card:
                     or self.color().lower() == other.lower())
         return False
 
+
     def __str__(self):
         return (f'\033[{"31" if self.color() == 'red' else "0"}m'
                 f'{self.rank} of {self.suit}\033[0m')
+
 
     def __int__(self):
         return self.value
 
 
+    def show_char(self):
+        return (f'\033[{"31" if self.color() == 'red' else "0"}m'
+                f'{chr(self.suits[self.suit] + self.ranks[self.rank])}\033[0m')
+
 
     def color(self):
         return 'red' if self.suit in ['Hearts', 'Diamonds'] else 'black'
+
+
+    @classmethod
+    def deck(cls):
+        return [cls(rank, suit) for suit in cls.suits for rank in cls.ranks]
 
 
     @staticmethod
@@ -89,9 +102,7 @@ class Card:
         return "\U0001F0A0"
 
 
-    def show_char(self):
-        return (f'\033[{"31" if self.color() == 'red' else "0"}m'
-                f'{chr(self.suits[self.suit] + self.ranks[self.rank])}\033[0m')
+
 
 
 RANKS = [
@@ -111,7 +122,10 @@ RANKS = [
 ]
 SUITS = ['Hearts', 'Diamonds', 'Clubs', 'Spades']
 STARTING_HAND_SIZE = 2
-deck = [Card(rank, suit) for suit in SUITS for rank in RANKS ]
+BUST_OVER = 21
+HIT_UNTIL = 17
+
+deck = Card.deck()
 
 def say(msg):
     print(f'==>{msg}')
@@ -132,13 +146,13 @@ def deal(card_to:list, card_from:list, count:int = 1):
 
 
 def value_of(hand:list)->int:
-    value = sum([int(card) if int(card) < 10 else 10 for card in hand])
-    if any([card.is_ace for card in hand]) and value + 10 <= 21:
+    value = sum([int(card) for card in hand])
+    if any([card.is_ace for card in hand]) and value + 10 <= BUST_OVER:
         value += 10
     return value
 
 def is_busted(hand:list)->bool:
-    return value_of(hand) > 21
+    return value_of(hand) > BUST_OVER
 
 def show_hand(hand:list, hide_one:bool = False):
     if not hide_one:
@@ -154,7 +168,6 @@ def show_hand(hand:list, hide_one:bool = False):
 def take_turn(card_to:list, card_from:list, is_dealer:bool = False):
     choices = ['hit', 'stay']
 
-    choice = ''
     while not is_busted(card_to):
         if not is_dealer:
             say('Hit or Stay?')
@@ -169,7 +182,7 @@ def take_turn(card_to:list, card_from:list, is_dealer:bool = False):
                 return {'bust':False}
 
         else:
-            while value_of(card_to) <= 17:
+            while value_of(card_to) <= HIT_UNTIL:
                 deal(card_to, card_from)
                 show_info()
             if not is_busted(card_to):
