@@ -179,15 +179,15 @@ def take_turn(card_to:list, card_from:list, is_dealer:bool = False):
                 deal(card_to, card_from)
                 show_info()
             else:
-                return {'bust':False}
+                return False
 
         else:
             while value_of(card_to) <= HIT_UNTIL:
                 deal(card_to, card_from)
                 show_info()
             if not is_busted(card_to):
-                return {'bust': False}
-    return {'bust':True}
+                return False
+    return True
 
 def show_info(hide_dealer = True):
     os.system('clear')
@@ -207,14 +207,14 @@ while True:
     deal(dealer,deck,count=2)
     show_info()
     result = take_turn(player, deck)
-    if result['bust']:
+    if result:
         say('You Busted! Dealer Wins!')
     else:
         result = take_turn(dealer, deck, is_dealer=True)
         show_info(hide_dealer=False)
-        if result['bust']:
+        if result:
             say('Dealer Busted! You Win!')
-    if not result['bust']:
+    if not result:
         if value_of(player) > value_of(dealer):
             say("You Win!")
         elif value_of(dealer) > value_of(player):
