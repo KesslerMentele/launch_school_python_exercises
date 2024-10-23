@@ -49,6 +49,7 @@ this is a sum of squares problem
 $$
 m = \sum_{i=1}^{p} i^2 \leq n
 $$
+
 or something like that
 
 # Data Structures
