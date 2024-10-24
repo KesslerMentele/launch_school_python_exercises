@@ -11,7 +11,20 @@ Output: integer equaling the next featured number larger than the given integer
 """
 
 def next_featured(floor:int)->int | str:
-    pass
+
+    def is_valid(num:int)->bool:
+        if num % 2 == 0 or num % 7 != 0:
+            return False
+        if len(str(num)) != len(set(str(num))):
+            return False
+        return True
+
+    while True:
+        if is_valid(floor + 1):
+            return floor + 1
+        else:
+            floor += 1
+
 
 
 print(next_featured(12) == 21)                  # True
