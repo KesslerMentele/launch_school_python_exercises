@@ -4,37 +4,47 @@ from pprint import pprint
 
 
 class Game:
-    def __init__(self, size = 3):
+
+    PLAYER_VALUES = (
+        ('X', 31),
+        ('O', 32),
+        ('Y', 34),
+        ('Z', 36),
+        ('A', 95),
+        ('B', 93),
+    )
+
+    def __init__(self,h_count = 1, c_count = 1, size = 3):
+        if (h_count + c_count) > 6:
+            raise ValueError('there can only be up to 6 players')
         self._size = size
-        self._board = Board(size)
-        self._human = Player('X', 31)
-        self._computer = Player('O', 36)
+        self._humans = [Player(*Game.PLAYER_VALUES[idx]) for idx in range(h_count)]
+        self._computers = [Player(*Game.PLAYER_VALUES[idx]) for idx in range(h_count, c_count+h_count)]
         self._winner = None
         self._scores = [0,0]
-        self._starting_player = self._human
-        self._players = [self._human, self._computer]
+        self._board = Board(size, [player.marker for player in self._players])
+
 
     def _new_game(self):
-        self._board = Board(self._size)
+        self._board = Board(self._size, [player.marker for player in self._players])
         self._winner = None
         self._scores = [0,0]
 
     def _play_one_game(self):
         self._new_game()
-        while self._winner is None:
-            if self._starting_player == self._human:
-                print(self._print_board())
-                self._player_turn()
-            else:
-                self._comp_turn()
+        while True:
+            for idx, player in enumerate(self._players):
+                if player in self._humans:
+                    self._print_board()
+                    self._player_turn(idx)
+                    os.system('clear')
+                else:
+                    self._comp_turn(idx)
+                if self._winner:
+                    break
             if self._winner:
                 break
-            if self._starting_player == self._human:
-                self._comp_turn()
-            else:
-                print(self._print_board())
-                self._player_turn()
-            os.system('clear')
+        os.system('clear')
 
 
     def play(self):
@@ -46,15 +56,14 @@ class Game:
                 print(self._print_board())
                 if self._winner == "Tie":
                     print('It\'s a Tie!')
-                elif self._winner == self._computer:
+                elif self._winner in self._computers:
                     self._scores[1] += 1
-                    print('You lose!')
-                else:
+                    print(f'Computer {self._winner.colored_marker} wins!')
+                elif self._winner in self._players:
                     self._scores[0] += 1
-                    print('You win!')
+                    print(f'Player {self._winner.colored_marker} wins!')
 
                 print(f'Scores: {self._scores[0]} to {self._scores[1]}')
-                self._swap_player()
                 if any([score == 1 for score in self._scores]):
                     break
 
@@ -64,52 +73,47 @@ class Game:
 
         print("Goodbye!")
 
-    def _swap_player(self):
-        if self._starting_player == self._human:
-            self._starting_player = self._computer
-        else:
-            self._starting_player = self._human
 
-
-    def _comp_turn(self):
+    def _comp_turn(self, num):
+        comp = self._players[num]
         almost = self._board.is_almost_winner()
         moves = self._board.valid_moves()
-        if almost[1] is not None and almost[1] != self._computer.marker:
+        if almost[1] is not None and almost[1] != comp.marker:
             val = list(almost[0].intersection(set(moves)))[0]
-        elif almost[1] is not None and almost[1] == self._computer.marker:
+        elif almost[1] is not None and almost[1] == comp.marker:
             val = list(almost[0].intersection(set(moves)))[0]
         elif ((self._size ** 2) // 2) + 1 in self._board.valid_moves():
             val = ((self._size ** 2) // 2) + 1
         else:
             val = random.choice(self._board.valid_moves())
-        self._board.change_square(val, self._computer.marker)
+        self._board.change_square(val, comp.marker)
 
 
         if self._board.is_winner()[0]:
-            self._winner = self._computer
+            self._winner = comp
         elif self._board.is_tie():
             self._winner = "Tie"
 
-
-    def _player_turn(self):
+    def _player_turn(self, num):
         val = 0
         move = None
+        player = self._players[num]
         while True:
             choice = input(
-                f"You are: {'X' if self._starting_player == self._human else 'O'}\n"
+                f"You are: {player.marker}\n"
                 f"Choose a square: "
             )
             try:
                 if int(choice) in self._board.valid_moves():
                     val = int(choice)
-                    move = self._human.marker
+                    move = player.marker
                     break
             except ValueError:
                 pass
             print("That is not a valid move.")
         self._board.change_square(val, move)
         if self._board.is_winner()[0]:
-            self._winner = self._human
+            self._winner = player
         elif self._board.is_tie():
             self._winner = "Tie"
 
@@ -119,40 +123,51 @@ class Game:
             board_str = board_str.replace(player.marker, player.colored_marker)
         print(board_str)
 
+    @property
+    def _players(self):
+        humans = self._humans
+        comps = self._computers
+        every_other = [player for pair in zip(humans, comps) for player in pair]
+        every_other.extend(humans[len(comps):] if len(humans) > len(comps) else comps[len(humans):])
+        return every_other
+
+    @property
+    def _player_count(self):
+        return len(self._humans) + len(self._computers)
+
     @staticmethod
     def join_or(enum:list, sep:str=', ', end_sep:str=', or ',):
         return sep.join([str(item) for item in enum[:-1]]) + end_sep + str(enum[-1])
 
 
 class Board:
-    LCAP = "*----"
-    MCAP = "----*----"
-    RCAP = "----*\n"
-    LBLANK = "|    "
-    MBLANK = "    |    "
-    RBLANK = "    |\n"
 
-    TYPES = ['X', 'O', None]
-
-    def __init__(self, size):
+    def __init__(self, size, markers):
         if size % 2 == 0:
             raise ValueError('Size must be an odd number!')
+        self._markers = markers
         self._size = size
         self._board = {key: None for key in range(1, (size ** 2) + 1)}
 
     def __repr__(self):
+        LCAP = "*----"
+        MCAP = "----*----"
+        RCAP = "----*\n"
+        LBLANK = "|    "
+        MBLANK = "    |    "
+        RBLANK = "    |\n"
         largest_number = len(str(self._size ** 2))
 
-        full_line_cap = self.LCAP + ("-" * largest_number) + (
-                    (self.MCAP + ("-" * largest_number)) * (self._size - 1)
-        ) + self.RCAP
+        full_line_cap = LCAP + ("-" * largest_number) + (
+                    (MCAP + ("-" * largest_number)) * (self._size - 1)
+        ) + RCAP
 
-        full_line_blank = self.LBLANK + (" " * largest_number) + (
-                    (self.MBLANK + (" " * largest_number)) * (self._size - 1)
-        ) + self.RBLANK
+        full_line_blank = LBLANK + (" " * largest_number) + (
+                    (MBLANK + (" " * largest_number)) * (self._size - 1)
+        ) + RBLANK
 
-        full_line_number = self.LBLANK + '{}' + (
-                    (self.MBLANK + '{}') * (self._size - 1)) + self.RBLANK
+        full_line_number = LBLANK + '{}' + (
+                    (MBLANK + '{}') * (self._size - 1)) + RBLANK
 
         full_board = full_line_cap
         for i in range(len(self._rows)):
@@ -205,10 +220,9 @@ class Board:
 
     def is_winner(self):
         for line in self.winning_lines:
-            if all([val == 'X' for val in line.values()]):
-                return True, 'X'
-            elif all([val == 'Y' for val in line.values()]):
-                return True, 'Y'
+            for marker in self._markers:
+                if all([val == marker for val in line.values()]):
+                    return True, marker
         return False, None
 
     def change_square(self, val, mark):
@@ -216,12 +230,11 @@ class Board:
 
     def is_almost_winner(self):
         for line in self.winning_lines:
-            if (list(line.values()).count('X') == self._size - 1 and
-                    list(line.values()).count(None) == 1):
-                return set(line), 'X'
-            if (list(line.values()).count('O') == self._size - 1 and
-                    list(line.values()).count(None) == 1):
-                return set(line), 'O'
+            for marker in self._markers:
+                if (list(line.values()).count(marker) == self._size - 1 and
+                        list(line.values()).count(None) == 1):
+                    return set(line), marker
+
         return None, None
 
     def is_tie(self):
@@ -241,5 +254,12 @@ class Player:
         self.marker = marker
         self.colored_marker = f'\033[1;{color}m{marker}\033[0m'
 
-game = Game(5)
+# The Game function takes three arguments, number of human players,
+# number of computer players, and an odd number board size.
+# The game can be played with a total of up to six players,
+# either humans or computers
+# It can be played with 0-6 humans and 0-6 computers, it doesn't care
+#
+
+game = Game(0,6,15)
 game.play()
