@@ -272,16 +272,17 @@ class Hand:
                 return True
         return False
 
-    def print_hand_art(self):
+    def get_hand_art(self):
         art_list = []
         for card in self._cards:
             art_list.append(card.get_art())
 
         art_split = [art.split('\n') for art in art_list]
         zipped = zip(*art_split)
+        combined_art_list = []
         for elems in zipped:
-            print("   ".join(elems))
-
+            combined_art_list.append("   ".join(elems))
+        return combined_art_list
 
     @property
     def value(self, include_hidden=False):
@@ -387,19 +388,25 @@ class TwentyOneGame:
         self._dealer.add(self._deck.deal())
 
     def _show_table(self):
+        print('\n')
+        print('*------------------------------------------------------------*')
         self._show_dealer_hand()
         print('\n\n')
         self._show_player_hand()
+        print('*------------------------------------------------------------*')
+        print('\n')
 
 
     def _show_player_hand(self):
+        for line in  self._player.hand.get_hand_art():
+            print(line)
         print(f'Your Hand (Value {self._player.score}):')
-        self._player.hand.print_hand_art()
 
 
     def _show_dealer_hand(self):
         print(f'Dealer\'s Hand (Value {self._dealer.score}):')
-        self._dealer.hand.print_hand_art()
+        for line in self._dealer.hand.get_hand_art():
+            print(line)
 
 
     def _player_turn(self):
@@ -409,14 +416,14 @@ class TwentyOneGame:
             choice = input("'Hit', or 'Stay':").casefold()
             if choice == 'hit':
                 self._player.add(self._deck.deal())
-                self._show_player_hand()
+                self._show_table()
                 if self._player.is_bust:
                     self._winner = self._dealer
                     return
 
     def _dealer_turn(self):
         while True:
-            self._show_dealer_hand()
+            self._show_table()
             if self._dealer.is_bust:
                 self._winner = self._player
                 return
