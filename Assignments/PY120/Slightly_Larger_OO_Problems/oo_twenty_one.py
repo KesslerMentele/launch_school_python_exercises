@@ -1,4 +1,5 @@
 import random
+from pprint import pprint
 
 
 class Card:
@@ -18,6 +19,175 @@ class Card:
         "Ace":'Ace'
     }
     SUITS = ('Clubs', 'Diamonds', 'Hearts', 'Spades')
+    SUIT_SYMBOLS = {'Clubs': '&',
+                    'Diamonds': 'o',
+                    'Hearts': 'v',
+                    'Spades': '^'}
+    BC = '\033[1;31;107m'
+    RS = '\033[0m\n'
+    BACK = (BC + '|\\ ~ /|' + RS +
+            BC + '|}}:{{|' + RS +
+            BC + '|}}:{{|' + RS +
+            BC + '|}}:{{|' + RS +
+            BC + '|/ ~ \\|' + RS)
+    FRONT_NUMBERS = {
+        2:  '@|2    |' + RS +
+            '@|  *  |' + RS +
+            '@|     |' + RS +
+            '@|  *  |' + RS +
+            '@|    Z|' + RS,
+
+        3:  '@|3    |' + RS +
+            '@| * * |' + RS +
+            '@|     |' + RS +
+            '@|  *  |' + RS +
+            '@|    E|' + RS,
+
+        4:  '@|4    |' + RS +
+            '@| * * |' + RS +
+            '@|     |' + RS +
+            '@| * * |' + RS +
+            '@|    h|' + RS,
+
+        5:  '@|5    |'  + RS +
+            '@| * * |'  + RS +
+            '@|  *  |'  + RS +
+            '@| * * |'  + RS +
+            '@|    S|'  + RS,
+
+        6:  '@|6    |' + RS +
+            '@| * * |' + RS +
+            '@| * * |' + RS +
+            '@| * * |' + RS +
+            '@|    Z|' + RS,
+
+        7:  '@|7    |' + RS +
+            '@| * * |' + RS +
+            '@|* * *|' + RS +
+            '@| * * |' + RS +
+            '@|    Z|' + RS,
+
+        8:  '@|8    |'  + RS +
+            '@|* * *|'  + RS +
+            '@| * * |'  + RS +
+            '@|* * *|'  + RS +
+            '@|    Z|'  + RS,
+
+        9:  '@|9    |' + RS +
+            '@|* * *|' + RS +
+            '@|* * *|' + RS +
+            '@|* * *|' + RS +
+            '@|    Z|' + RS,
+
+        10: '@|10 * |' + RS +
+            '@|* * *|' + RS +
+            '@|* * *|' + RS +
+            '@|* * *|' + RS +
+            '@|   0I|' + RS,
+    }
+
+    FRONT_FACES = {
+        'Clubs':{
+            'Jack':  '@|J  ww|' + RS +
+                     '@| o {)|' + RS +
+                     '@|o o% |' + RS +
+                     '@| | % |' + RS +
+                     '@|  %%[|' + RS,
+
+            'Queen': '@|Q  ww|' + RS +
+                     '@| o {(|' + RS +
+                     '@|o o%%|' + RS +
+                     '@| |%%%|' + RS +
+                     '@| %%%O|' + RS,
+
+            'King':  '@|K  ww|' + RS +
+                     '@| o {)|' + RS +
+                     '@|o o%%|' + RS +
+                     '@| |%%%|' + RS +
+                     '@| %%%>|' + RS,
+
+            'Ace':   '@|A _  |' + RS +
+                     '@| ( ) |' + RS +
+                     '@|(_\'_)|' + RS +
+                     '@|  |  |' + RS +
+                     '@|    V|' + RS,
+        },
+        'Diamonds':{
+            'Jack':  '@|J  ww|' + RS +
+                     '@| /\\{)|' + RS +
+                     '@| \\/% |' + RS +
+                     '@|   % |' + RS +
+                     '@|  %%[|' + RS,
+
+            'Queen': '@|Q  ww|' + RS +
+                     '@| /\\{(|' + RS +
+                     '@| \\/%%|' + RS +
+                     '@|  %%%|' + RS +
+                     '@| %%%O|' + RS,
+
+            'King':  '@|K  ww|' + RS +
+                     '@| /\\{)|' + RS +
+                     '@| \\/%%|' + RS +
+                     '@|  %%%|' + RS +
+                     '@| %%%>|' + RS,
+
+            'Ace':   '@|A ^  |' + RS +
+                     '@| / \\ |' + RS +
+                     '@| \\ / |' + RS +
+                     '@|  v  |' + RS +
+                     '@|    V|' + RS,
+        },
+        'Hearts':{
+            'Jack':  '@|J  ww|'  + RS +
+                     '@|   {)|'  + RS +
+                     '@|(v)% |'  + RS +
+                     '@| v % |'  + RS +
+                     '@|  %%[|'  + RS,
+
+            'Queen': '@|Q  ww|' + RS +
+                     '@|   {(|' + RS +
+                     '@|(v)%%|' + RS +
+                     '@| v%%%|' + RS +
+                     '@| %%%O|' + RS,
+
+            'King':  '@|K  ww|' + RS +
+                     '@|   {)|' + RS +
+                     '@|(v)%%|' + RS +
+                     '@| v%%%|' + RS +
+                     '@| %%%>|' + RS,
+
+            'Ace':   '@|A_ _ |' + RS +
+                     '@|( v )|' + RS +
+                     '@| \\ / |' + RS +
+                     '@|  v  |' + RS +
+                     '@|    V|' + RS,
+        },
+        'Spades':{
+            'Jack':  '@|J  ww|'  + RS +
+                     '@| ^ {)|'  + RS +
+                     '@|(.)% |'  + RS +
+                     '@| | % |'  + RS +
+                     '@|  %%[|'  + RS,
+
+            'Queen': '@|Q  ww|' + RS +
+                     '@| ^ {(|' + RS +
+                     '@|(.)%%|' + RS +
+                     '@| |%%%|' + RS +
+                     '@| %%%O|' + RS,
+
+            'King':  '@|K  ww|' + RS +
+                     '@| ^ {)|' + RS +
+                     '@|(.)%%|' + RS +
+                     '@| |%%%|' + RS +
+                     '@| %%%>|' + RS,
+
+            'Ace':   '@|A .  |' + RS +
+                     '@| /.\\ |' + RS +
+                     '@|(_._)|'  + RS +
+                     '@|  |  |'  + RS +
+                     '@|    V|'  + RS,
+        }
+    }
 
 
     def __init__(self, rank, suit):
@@ -29,10 +199,11 @@ class Card:
         self._rank = rank
         self._suit = suit
 
-    def __str__(self):
+
+    def __repr__(self):
         if self._hidden:
             return '\033[1;30;107m Hidden Card \033[0m'
-        return f'{self._color()} {self._rank} of {self._suit} \033[0m'
+        return f'{self._color} {self._rank} of {self._suit} \033[0m'
 
     def flip(self, hidden=None):
         self._hidden = hidden if hidden is not None else not self._hidden
@@ -43,21 +214,29 @@ class Card:
     def reveal(self):
         self._hidden = False
 
-    @property
-    def hidden(self):
-        return self._hidden
-
     def is_face_card(self):
         return self._rank in ('Jack', 'Queen', 'King')
 
     def is_ace(self):
         return self._rank == "Ace"
 
+    @property
     def _color(self):
         if self._suit in ("Diamonds", "Hearts"):
             return "\033[1;31;107m"
         else:
             return '\033[1;30;107m'
+
+    def get_art(self):
+        if self.hidden:
+            return Card.BACK
+        if self.is_face_card() or self.is_ace():
+            return  Card.FRONT_FACES[self._suit][self._rank].replace('@', self._color)
+        return Card.FRONT_NUMBERS[self._rank].replace('*',  Card.SUIT_SYMBOLS[self._suit]).replace('@', self._color)
+
+    @property
+    def hidden(self):
+        return self._hidden
 
     @property
     def value(self):
@@ -92,6 +271,17 @@ class Hand:
             if card.is_ace():
                 return True
         return False
+
+    def print_hand_art(self):
+        art_list = []
+        for card in self._cards:
+            art_list.append(card.get_art())
+
+        art_split = [art.split('\n') for art in art_list]
+        zipped = zip(*art_split)
+        for elems in zipped:
+            print("   ".join(elems))
+
 
     @property
     def value(self, include_hidden=False):
@@ -168,7 +358,7 @@ class TwentyOneGame:
         while again:
             self._new_game()
             self._initial_deal()
-            self._show()
+            self._show_table()
             self._player_turn()
             print('\n\n')
 
@@ -196,7 +386,7 @@ class TwentyOneGame:
         self._dealer.add(self._deck.deal(hidden=True))
         self._dealer.add(self._deck.deal())
 
-    def _show(self):
+    def _show_table(self):
         self._show_dealer_hand()
         print('\n\n')
         self._show_player_hand()
@@ -204,12 +394,12 @@ class TwentyOneGame:
 
     def _show_player_hand(self):
         print(f'Your Hand (Value {self._player.score}):')
-        print(self._player.hand)
+        self._player.hand.print_hand_art()
 
 
     def _show_dealer_hand(self):
         print(f'Dealer\'s Hand (Value {self._dealer.score}):')
-        print(self._dealer.hand)
+        self._dealer.hand.print_hand_art()
 
 
     def _player_turn(self):
@@ -244,6 +434,9 @@ class TwentyOneGame:
 
 
     pass
+
+
+
 
 test = TwentyOneGame()
 test.start()
