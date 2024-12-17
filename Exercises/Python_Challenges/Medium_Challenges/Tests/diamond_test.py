@@ -1,5 +1,5 @@
 import unittest
-from Exercises.Python_Challenges.Meduim_Challenges.diamond import Diamond
+from Exercises.Python_Challenges.Medium_Challenges.diamond import Diamond
 
 class DiamondTest(unittest.TestCase):
 

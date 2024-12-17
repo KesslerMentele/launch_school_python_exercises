@@ -1,7 +1,7 @@
 import unittest
 import re
 import random
-from Exercises.Python_Challenges.Meduim_Challenges.robot_name import Robot
+from Exercises.Python_Challenges.Medium_Challenges.robot_name import Robot
 
 class RobotTest(unittest.TestCase):
     DIFFERENT_ROBOT_NAME_SEED = 1234
